@@ -23,7 +23,8 @@ spec=smooth(spec,2)
 unc=smooth(unc,2)
 
 ;erase major outliers
-erase = where(unc ge 0.9)
+;this is the cause of gaps in the final spectrum. If you want to keep the outliers then comment this out or adjust the cut
+erase = where(unc ge 1.9)
 spec(erase) = 'NAN' 
 
 ;erase major outliers
