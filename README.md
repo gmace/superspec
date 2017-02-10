@@ -14,3 +14,8 @@ order of operation:
 4) run step 3, med_comb_spec_H_s3.pro
 
 5) Enjoy.
+
+
+Note: Lines 26 and 27 in step 3 erase the noisy data from your spectrum. 
+If you don't like gaps in your data then adjust or remove the cut. 
+However, know that the uncertainties on those points are very large.
