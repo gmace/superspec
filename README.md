@@ -3,6 +3,7 @@ Median combine IGRINS spectra from multiple epoch observations.
 
 This code takes about 45 minutes to process 3 IGRINS epochs and this time scales linearly with the number of epochs. 40 spectra takes 6 hours.
 
+
 Order of operation:
 
 1) edit the inlist files to point to your data.
@@ -18,6 +19,7 @@ Order of operation:
   unc - RV uncertainties, not currently used.
   
   BVC - Barycenter velocity correction from JskyCalc. This is required to register your spectra before combining.
+
 
 2) run step 1, med_comb_spec_H_s1.pro and/or med_comb_spec_K_s1.pro
 
