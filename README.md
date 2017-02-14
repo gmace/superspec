@@ -6,6 +6,7 @@ This code takes about 45 minutes to process 3 IGRINS epochs and this time scales
 Order of operation:
 
 1) edit the inlist files to point to your data.
+  
   spectrum - A0V corrected spectrum from the pipeline. Ensure that the correct A0 was used for your target to avoid propogating a bad telluric correction nto your final merged spectrum.
   
   RVindex - a book keeping number I use in my radial velocity code. Can be any number since not used by superspec.
