@@ -1,7 +1,7 @@
 pro mcsks3
 
 ;
-;GNM 02.09.2017
+;GNM 02.14.2017
 ;
 ;sort merged spectrum, smooth to native pixel scale
 ;output saved as ASCII
@@ -18,14 +18,9 @@ unc=readfits(uncfile,hdr,/SILENT)
 
 ; the previous steps double sampled, so instead of rebinning, I have
 ; smoothed the spectrum back to the native per pixel level of IGRINS
-wave=smooth(wave,2)
-spec=smooth(spec,2)
-unc=smooth(unc,2)
-
-;erase major outliers
-;this is the cause of gaps in the final spectrum. If you want to keep the outliers then comment this out or adjust the cut
-erase = where(unc ge 1.9)
-spec(erase) = 'NAN' 
+wave=smooth(wave,2,/NAN)
+spec=smooth(spec,2,/NAN)
+unc=smooth(unc,2,/NAN)
 
 ;erase major outliers
 erase = where(wave lt 1.8)

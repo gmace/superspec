@@ -1,7 +1,7 @@
 pro mcsks2
 
 ;
-;GNM 02.09.2017
+;GNM 02.14.2017
 ;
 ;for each wavelength, go find the flux values and median combine them.
 
@@ -38,20 +38,39 @@ for i=1,looper-2 do begin ; for each wavelength in the standard file except the 
       isize=size(ignore)
       number=looper-isize(1) ; how many did it find that are not worth ignoring?
       spec(ignore)='NAN'     ; erase the ones worth ignoring
-      places = where(finite(spec))  ; where are the good fluxes?
-      spectemp(0:number-1,k)=spec(places) ; then save those in the temporary spectrum array
+      places = where(finite(spec)) ; where are the good fluxes?
+      if places(0) eq -1 then continue ; if there are none worth keeping, then move on to the next wavelength
+      psize=size(places)
+      spectemp(0:psize(1)-1,k)=spec(places) ; then save those in the temporary spectrum array
    endfor
+
    killer = where(spectemp eq 0.0) ; there are a lot of unused points in the temp.spec.
    spectemp(killer)='NAN'          ; erase them
+   killer = where(spectemp le -6.5)  ; if there are wacky outliers after interpolating
+   spectemp(killer)='NAN'          ; erase them
+   killer = where(spectemp ge  8.5) ; if there are wacky outliers after interpolating
+   spectemp(killer)='NAN'          ; erase them
+
    keeper = where(finite(spectemp)); find the fluxes that we still have kept 
    if keeper(0) eq -1 then continue; if there are none worth keeping, then move on to the next wavelength
    
-   value = median(spectemp(keeper)); the median flux for this wavelength is 'value'
-   moment4,spectemp(keeper),avg,avgdev,stddev,var,skew,kurt ; compute stats for the fluxes
+   value = median(spectemp(keeper)) ; the median flux for this wavelength is 'value'
+   uncert = stddev(spectemp(keeper))
+
+   killer = where(spectemp le value-1.5*uncert) ; if there are wacky outliers
+   spectemp(killer)='NAN'          ; erase them
+   killer = where(spectemp ge value+1.5*uncert) ; if there are wacky outliers
+   spectemp(killer)='NAN'          ; erase them
+
+   keeper = where(finite(spectemp)) ; find the fluxes that we still have kept 
+   if keeper(0) eq -1 then continue; if there are none worth keeping, then move on to the next wavelength
+   
+   value = median(spectemp(keeper)) ; the median flux for this wavelength is 'value'
+   uncert = stddev(spectemp(keeper))
    
    waveo(i)=wavestandard(i) ; store the wavelength
    speco(i)=value           ; store the median flux
-   unco(i)=stddev           ; store the stddev
+   unco(i)=uncert           ; store the stddev
 endfor
 
 writefits,'waveo_K.fits',waveo,hdr

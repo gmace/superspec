@@ -1,7 +1,7 @@
 pro mcshs1
 
 ;
-;GNM 02.09.2017
+;GNM 02.14.2017
 ;
 ;shift, normalize, and double sample spectra.
 ;output saved as spec and wave for each epoch.
@@ -24,19 +24,17 @@ for k=0,srv(1)-1 do begin ; for each epoch
    spec=spec/median(spec(norm)) ;normalize the spectrum before median combining 
 
    ;erase major outliers
-   erase = where(spec le -4)
+   erase = where(spec le -6.5)
    spec(erase) = 'NAN'      
 
-   erase = where(spec ge 5)
+   erase = where(spec ge 8.5)
    spec(erase) = 'NAN'          
-   
-   moment4,spec,avg,avgdev,stddev,var,skew,kurt
 
    ;erase minor outliers
-   erase = where(spec le 1-stddev*1.5)
+   erase = where(spec le 1-stddev(spec)*1.5)
    spec(erase) = 'NAN'     
 
-   erase = where(spec ge 1+stddev*1.5)
+   erase = where(spec ge 1+stddev(spec)*1.5)
    spec(erase) = 'NAN'      
    
    speci=dblarr(2048*finegrid,rows)
