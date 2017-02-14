@@ -70,7 +70,7 @@ for i=1,looper-2 do begin ; for each wavelength in the standard file except the 
    
    waveo(i)=wavestandard(i) ; store the wavelength
    speco(i)=value           ; store the median flux
-   unco(i)=uncert           ; store the stddev
+   unco(i)=uncert/(srv(1)^0.5)           ; store the standard deviation of the mean.
 endfor
 
 writefits,'waveo_K.fits',waveo,hdr
