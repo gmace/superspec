@@ -63,14 +63,15 @@ for i=1,looper-2 do begin ; for each wavelength in the standard file except the 
    spectemp(killer)='NAN'          ; erase them
 
    keeper = where(finite(spectemp)) ; find the fluxes that we still have kept 
-   if keeper(0) eq -1 then continue; if there are none worth keeping, then move on to the next wavelength
+   if keeper(0) eq -1 then continue ; if there are none worth keeping, then move on to the next wavelength
+   skeep = size(keeper)
    
    value = median(spectemp(keeper)) ; the median flux for this wavelength is 'value'
-   uncert = stddev(spectemp(keeper))
-   
+   uncert = stddev(spectemp(keeper))/(skeep(1)^0.5); standard deviation of the mean
+
    waveo(i)=wavestandard(i) ; store the wavelength
    speco(i)=value           ; store the median flux
-   unco(i)=uncert/(srv(1)^0.5)           ; store the standard deviation of the mean.
+   unco(i)=uncert          ; store the uncertainty
 endfor
 
 writefits,'waveo_K.fits',waveo,hdr
