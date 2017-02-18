@@ -32,3 +32,5 @@ Order of operation:
 Note: This code has been texted on 3 or more input spectra - it is unclear what it will do to a pair of spectra.
 
 Note: If your spectra have small BVC and/or RV offsets between observations, then the median combination will still not be good. This is because the telluric absorption lines will be at the same wavelengths still. For the best results, use spectra with BVC values different by more than 4 km/s.
+
+Imporvements that can be made: 1) order overlap is not acounted for very well. 2) rebinning in the end instead of smoothing and leaving oversampled.
